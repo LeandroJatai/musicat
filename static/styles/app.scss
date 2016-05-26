@@ -1,0 +1,99 @@
+@import url(https://fonts.googleapis.com/css?family=Cabin+Condensed);
+
+@import "bootstrap/variables.scss";
+@import "header";
+
+// ADJUST NAVBAR ########################################
+
+.navbar {
+  border-radius: 0px;
+  background-color: #342c2c;
+  border-color:  #a87003;
+  border-bottom-width: 2px;
+  margin: 0;
+  min-height: 56px;
+
+  a {
+    color: #d9d7d7;
+  }
+}
+
+.navbar-inverse {
+  a.navbar-brand {
+    font-size: 30px;
+    line-height: 1em;
+    color: #eee;
+    font-family: "Cabin Condensed";
+    padding: 13px 13px 12px;;
+  }
+  .navbar-nav {
+    & > li {
+      & > a {
+        line-height: 54px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+      }
+
+    }
+    & > .open {
+      & > a, & > a:hover, & > a:focus {
+        background-color: #474036;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.masthead {
+  color: #a87003;
+}
+
+
+
+// ADJUST DRUNKEN PARROT STYLES ########################################
+h1, .h1 {
+  font-size: 30px;
+}
+h2, .h2 {
+  font-size: 24px;
+}
+h3, .h3 {
+  font-size: 20px;
+}
+h4, .h4 {
+  font-size: 16px;
+}
+h5, .h5 {
+  font-size: 14px;
+}
+h6, .h6 {
+  font-size: 12px;
+}
+
+
+// #### footer ###########################################
+// based on http://getbootstrap.com/examples/sticky-footer
+
+$footer-height : 50px;
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: $footer-height + 20px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: $footer-height;
+  background: #342c2c none repeat scroll 0% 0%;
+  color: white;
+  text-align: center;
+}
+
+// #### pagination ########################################
+.pagination {
+  padding-top: 25px;
+}

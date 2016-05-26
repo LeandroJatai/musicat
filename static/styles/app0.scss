@@ -1,0 +1,137 @@
+
+@import "bootstrap/variables.scss";
+@import "header";
+
+.masthead {
+  padding: 10px;
+  .nav {
+    margin-top: 65px;
+  }
+  .navbar-brand {
+    color: $headings-color;
+    font-size: 24px;
+    img {
+      margin-right: $navbar-padding-horizontal;
+    }
+    small {
+      color: #93A4AA;
+      font-size: 75%;
+      line-height: 25px;
+    }
+  }
+}
+
+.navbar {
+  margin-bottom: 0;
+}
+
+.navbar-brand {
+  padding: 0px;
+}
+
+// ADJUST DRUNKEN PARROT STYLES ########################################
+h1, .h1 {
+  font-size: 30px;
+}
+h2, .h2 {
+  font-size: 24px;
+}
+h3, .h3 {
+  font-size: 20px;
+}
+h4, .h4 {
+  font-size: 16px;
+}
+h5, .h5 {
+  font-size: 14px;
+}
+h6, .h6 {
+  font-size: 12px;
+}
+
+.page-header {
+    margin: 20px 0px 10px;
+}
+
+.btn:hover, .btn:focus {
+    color: inherit;
+}
+
+// #### CRUD DETAIL ########################################
+p.control-label {
+  font-weight: bold;
+}
+
+// copied from bootstrap _forms.scss legend
+// using @extend would require importing parts of bootstrap again and overriding drunken parrot css
+//   @import "bootstrap/mixins.scss";
+//   @import "bootstrap/forms.scss";
+
+.legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: $line-height-computed;
+  font-size: ($font-size-base * 1.5);
+  line-height: inherit;
+  color: $legend-color;
+  border: 0;
+  border-bottom: 1px solid $legend-border-color;
+}
+
+// #### footer ###########################################
+// based on http://getbootstrap.com/examples/sticky-footer
+
+$footer-height : 140px;
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: $footer-height + 20px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: $footer-height;
+  background: #364347 none repeat scroll 0% 0%;
+  color: white;
+  text-align: center;
+  p {
+    color: white;
+    margin-top: 10px;
+  }
+  .container {
+    padding-top: 25px;
+  }
+}
+
+// #### pagination ########################################
+.pagination {
+  padding-top: 25px;
+}
+
+// #### conserta radios e checkboxes escondidas pelo drunken parrot ############
+// FIXME ajustar após solução definitiva
+.checkbox input, .radio input {
+    display: initial;
+}
+
+.modal {
+  .alert {
+    margin-bottom: 0;
+  }
+}
+
+
+fieldset {
+
+  fieldset {
+    font-size: 95%;
+    legend {
+      font-size: 18px;
+    }
+  }
+}
