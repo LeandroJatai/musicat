@@ -1,4 +1,4 @@
-{% load i18n staticfiles sass_tags menus %}
+{% load i18n staticfiles social_utils sass_tags menus %}
 <!DOCTYPE html>
 <!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!-->
@@ -53,36 +53,27 @@
                     <li class="nav__sub-item"><a class="nav__sub-link" href="#">Sub2</a></li>
                   </ul>
                 </li>
-
-
-
             </ul>
             <ul class="nav navbar-nav navbar-right" id="autenticacao">
-
-
-
-
-
-
-
-
-              {% if not user.is_authenticated %}
-                <li><a href="{% url 'base:login' %}">{% trans "Acessar" %}</a></li>
-              {% else %}
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    {% if user.first_name or user.last_name %}
-                      {{ user.get_full_name }}
-                    {% else %}
-                      {{ user.username }}
-                    {% endif %}
-                    <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a href="{% url 'base:logout' %}">Sair</a></li>
-                  </ul>
-                </li>
-              {% endif %}
+               {% if user and not user.is_anonymous %}
+                 <li class="dropdown">
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                     {{ user.get_full_name|default:user.username }}
+                     <span class="caret"></span>
+                   </a>
+                   <ul class="dropdown-menu">
+                     <li><a href="{% url 'auth:logout' %}">{% trans "Sair" %}</a></li>
+                   </ul>
+                 </li>
+               {% else %}
+                     {% for backend in backends.backends %}
+                      <li><a class="btn-social" id="{{ backend }}-button" name="{{ backend }}"
+                        title = "{% blocktrans with backend_name=backend|social_title %}Acessar com {{ backend_name }}{% endblocktrans %}"
+                        href="{% url 'social:begin' backend=backend %}?next={{ request.path }}">
+                        <img src="{% static backend|social_icon %}" />
+                     </a></li>
+                    {% endfor %}
+               {% endif %}
             </ul>
 
           </div><!--/.nav-collapse -->
@@ -139,33 +130,6 @@
               </div>
             {% endblock base_header %}
 
-
-            <div>
-             <h1>Third-party authentication demo</h1>
-
-             <p>
-               <ul>
-               {% if user and not user.is_anonymous %}
-                 <li>
-                   <a>Hello {{ user.get_full_name|default:user.username }}!</a>
-                 </li>
-                 <li>
-                   <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
-                 </li>
-               {% else %}
-                 <li>
-                   <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
-                 </li>
-                 <li>
-                   <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
-                 </li>
-                 <li>
-                   <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a>
-                 </li>
-               {% endif %}
-               </ul>
-             </p>
-             </div>
 
 
 

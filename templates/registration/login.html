@@ -21,7 +21,7 @@
                       <h3 class="panel-title">Entrar</h3>
                   </div>
                   <div class="panel-body">
-                    <form id="login-form" method="post" action="{% url 'base:login' %}">
+                    <form id="login-form" method="post" action="{% url 'auth:login' %}">
                         {% csrf_token %}
 
                           <p class="bs-component">
