@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.views.generic.base import TemplateView
 
 import base.urls
+import core.urls
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html')),
@@ -26,4 +27,5 @@ urlpatterns = [
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
     url(r'', include(base.urls)),
+    url(r'', include(core.urls)),
 ]

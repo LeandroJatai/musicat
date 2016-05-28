@@ -69,7 +69,8 @@
                      {% for backend in backends.backends %}
                       <li><a class="btn-social" id="{{ backend }}-button" name="{{ backend }}"
                         title = "{% blocktrans with backend_name=backend|social_title %}Acessar com {{ backend_name }}{% endblocktrans %}"
-                        href="{% url 'social:begin' backend=backend %}?next={{ request.path }}">
+                        href="{% url 'social:begin' backend=backend %}?next=/">
+                        {% blocktrans with backend_name=backend|social_title %}Acessar com {{ backend_name }}{% endblocktrans %}
                         <img src="{% static backend|social_icon %}" />
                      </a></li>
                     {% endfor %}
@@ -110,12 +111,6 @@
             {# Content header #}
             {% block base_header %}
               <div class="clearfix">
-
-                {% block help %}
-                  {% if view.help_path %}
-                    <a class="contextual-help right" href="{% url 'base:help_base' %}{{ view.help_path }}">{% trans 'Ajuda' %}</a>
-                  {% endif %}
-                {% endblock %}
 
                 {% block title %}
                   <h1 class="page-header">

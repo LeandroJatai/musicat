@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 from decouple import config
 from dj_database_url import parse as db_url
-from unipath import Path
 from django.utils.translation import ugettext_lazy as _
+from unipath import Path
+
 
 BASE_DIR = Path(__file__).ancestor(2)
 
@@ -46,6 +47,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
 
+    'core',
+
     # more
     'django_extensions',
     'djangobower',
@@ -58,7 +61,7 @@ INSTALLED_APPS = (
 
 ) + MUSICAT_APPS
 
-#if DEBUG:
+# if DEBUG:
 #    INSTALLED_APPS += ('debug_toolbar',)
 
 MIDDLEWARE_CLASSES = (
@@ -97,39 +100,46 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-   'social.backends.facebook.FacebookOAuth2',
-   'social.backends.google.GoogleOAuth2',
-   'social.backends.twitter.TwitterOAuth',
-   'django.contrib.auth.backends.ModelBackend',
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
+
+"""'social.backends.google.GoogleOAuth2',
+'social.backends.twitter.TwitterOAuth',"""
 
 SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY', cast=str)
 SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET', cast=str)
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', cast=str)
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', cast=str)
-
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config(
+    'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', cast=str)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config(
+    'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', cast=str)
 
 SOCIAL_AUTH_TWITTER_KEY = config('SOCIAL_AUTH_TWITTER_KEY', cast=str)
 SOCIAL_AUTH_TWITTER_SECRET = config('SOCIAL_AUTH_TWITTER_SECRET', cast=str)
 
+USER_FIELDS = ('email',)
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id,name,first_name,last_name,email'
+}
 
 SOCIAL_BACKEND_INFO = {
-    'google-oauth2': {
-        'title': _('Google'),
-        'icon': 'img/icon-google-plus.png',
-    },
     'facebook': {
         'title': _('Facebook'),
         'icon': 'img/icon-facebook.png',
-    },
-    'twitter': {
-        'title': _('Twitter'),
-        'icon': 'img/icon-twitter.png',
     }
 }
-
-
+"""'google-oauth2': {
+    'title': _('Google'),
+    'icon': 'img/icon-google-plus.png',
+},
+'twitter': {
+    'title': _('Twitter'),
+    'icon': 'img/icon-twitter.png',
+}
+"""
 
 WSGI_APPLICATION = 'musicat.wsgi.application'
 
@@ -142,7 +152,6 @@ DATABASES = {
         cast=db_url,
     )
 }
-
 
 
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
