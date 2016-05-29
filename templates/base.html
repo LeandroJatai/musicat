@@ -1,4 +1,4 @@
-{% load i18n staticfiles social_utils sass_tags menus %}
+{% load i18n staticfiles social_utils sass_tags menus core_filters %}
 <!DOCTYPE html>
 <!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!-->
@@ -45,27 +45,40 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu1 <span class="caret"></span></a>
+              {% if perms.list_classe %}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Configurações<span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li class="nav__sub-item"><a class="nav__sub-link" href="#">Sub1</a></li>
+                    <li class="nav__sub-item"><a class="nav__sub-link" href="{% url 'core:classe_list'%}">Classes</a></li>
                     <li class="nav__sub-item"><a class="nav__sub-link" href="#">Sub2</a></li>
                   </ul>
                 </li>
+              {% endif %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Classes<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  {% for classe in 'core.models.Classe'|objects_all_model %}
+                    <li class="nav__sub-item"><a class="nav__sub-link" href="#">{{classe.titulo}}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="autenticacao">
-               {% if user and not user.is_anonymous %}
-                 <li class="dropdown">
-                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                     {{ user.get_full_name|default:user.username }}
-                     <span class="caret"></span>
-                   </a>
-                   <ul class="dropdown-menu">
-                     <li><a href="{% url 'auth:logout' %}">{% trans "Sair" %}</a></li>
-                   </ul>
-                 </li>
-               {% else %}
+              {% if user and not user.is_anonymous %}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    {{ user.get_full_name|default:user.email }}
+                    <span class="caret"></span>
+                    {% if user.social_auth.all.0.provider == 'facebook' %}
+                      <img class="avatar" src="http://graph.facebook.com/v2.6/{{user.social_auth.all.0.uid}}/picture?height=46" />
+                    {% endif %}
+
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'auth:logout' %}">{% trans "Sair" %}</a></li>
+                  </ul>
+                </li>
+              {% else %}
                      {% for backend in backends.backends %}
                       <li><a class="btn-social" id="{{ backend }}-button" name="{{ backend }}"
                         title = "{% blocktrans with backend_name=backend|social_title %}Acessar com {{ backend_name }}{% endblocktrans %}"
@@ -86,7 +99,7 @@
       {% block main_header %}
       <header class="masthead">
         <div class="container">
-            <small><i>{% trans 'Bem simples assim, mais até que uma pasta!!! ' %}</i></small>
+            <small class="slogan"><i>{% trans 'Bem simples assim, mais até que uma pasta!!! ' %}</i></small>
           {% block sections_nav %} {% subnav %} {% endblock sections_nav %}
         </div>
       </header>
@@ -164,5 +177,9 @@
       {% block extra_js %}{% endblock %}
 
     {% endblock foot_js %}
+
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-574a91d6558199dd"></script>
+
   </body>
 </html>

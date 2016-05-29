@@ -1,6 +1,7 @@
-from django.contrib.auth.models import User
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from base.models import User
 
 
 class MusicatModelMixin(models.Model):
@@ -19,22 +20,28 @@ class Classe(models.Model):
     titulo = models.CharField(max_length=256, verbose_name=_('Título'))
 
     class Meta:
+        ordering = ['id']
         verbose_name = _('Classe')
         verbose_name_plural = _('Classes')
+        permissions = (
+            ('list_classe', _('Visualização da Lista de classes')),
+        )
 
     def __str__(self):
         return self.titulo
 
 
 class Musica(models.Model):
-    uri = models.CharField(max_length=100, verbose_name=_('URI'))
+    uri = models.CharField(max_length=100, verbose_name=_('URI'), unique=True)
+    titulo = models.CharField(max_length=256, verbose_name=_('Título'))
 
     class Meta:
+        ordering = ['titulo']
         verbose_name = _('Música')
         verbose_name_plural = _('Músicas')
 
     def __str__(self):
-        return self.uri
+        return self.titulo
 
 
 class MusicaHistory(MusicatModelMixin):
@@ -45,6 +52,7 @@ class MusicaHistory(MusicatModelMixin):
     classes = models.ManyToManyField(Classe)
 
     class Meta:
+        ordering = ['-created']
         verbose_name = _('Música')
         verbose_name_plural = _('Músicas')
 
@@ -71,6 +79,7 @@ class VersaoHistory(MusicatModelMixin):
     texto = models.TextField(verbose_name=_('Texto'))
 
     class Meta:
+        ordering = ['-created']
         verbose_name = _('Versão')
         verbose_name_plural = _('Versões')
 

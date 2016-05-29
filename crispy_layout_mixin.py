@@ -1,12 +1,12 @@
 from math import ceil
 from os.path import dirname, join
 
-import rtyaml
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Fieldset, Layout, Submit
 from django.utils import formats
 from django.utils.translation import ugettext as _
+import rtyaml
 
 
 def heads_and_tails(list_of_lists):
@@ -38,14 +38,14 @@ def form_actions(more=[], save_label=_('Salvar')):
         Submit('salvar', save_label, css_class='pull-right'), *more)
 
 
-class SaplFormLayout(Layout):
+class MusicatFormLayout(Layout):
 
     def __init__(self, *fields, label_cancel=_('Cancelar')):
         buttons = form_actions(more=[
             HTML('<a href="{{ view.cancel_url }}"'
                  ' class="btn btn-inverse">%s</a>' % label_cancel)])
         _fields = list(to_fieldsets(fields)) + [to_row([(buttons, 12)])]
-        super(SaplFormLayout, self).__init__(*_fields)
+        super(MusicatFormLayout, self).__init__(*_fields)
 
 
 def get_field_display(obj, fieldname):
@@ -70,8 +70,8 @@ def get_field_display(obj, fieldname):
     elif 'FieldFile' in str(type(value)):
         if value:
             display = '<a href="{}">{}</a>'.format(
-                                                value.url,
-                                                value.name.split('/')[-1:][0])
+                value.url,
+                value.name.split('/')[-1:][0])
         else:
             display = ''
     else:
@@ -112,7 +112,7 @@ class CrispyLayoutFormMixin:
             pass
         else:
             form.helper = FormHelper()
-            form.helper.layout = SaplFormLayout(*self.get_layout())
+            form.helper.layout = MusicatFormLayout(*self.get_layout())
             return form
 
     @property

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 from decouple import config
 from dj_database_url import parse as db_url
 from django.utils.translation import ugettext_lazy as _
+from easy_thumbnails.conf import Settings as thumbnail_settings
 from unipath import Path
 
 
@@ -35,6 +36,7 @@ LOGIN_URL = '/login/?next='
 # MUSICAT business apps in dependency order
 MUSICAT_APPS = (
     'base',
+    'core',
 )
 
 INSTALLED_APPS = (
@@ -47,7 +49,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
 
-    'core',
 
     # more
     'django_extensions',
@@ -55,14 +56,15 @@ INSTALLED_APPS = (
     'bootstrap3',  # basically for django_admin_bootstrapped
     'crispy_forms',
     'easy_thumbnails',
+    'image_cropping',
     'floppyforms',
     'sass_processor',
     'rest_framework',
 
 ) + MUSICAT_APPS
 
-# if DEBUG:
-#    INSTALLED_APPS += ('debug_toolbar',)
+if DEBUG:
+    INSTALLED_APPS += ('debug_toolbar',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -99,12 +101,16 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'base.User'
+
+
 AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
     'social.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-"""'social.backends.google.GoogleOAuth2',
+"""
 'social.backends.twitter.TwitterOAuth',"""
 
 SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY', cast=str)
@@ -126,15 +132,16 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 }
 
 SOCIAL_BACKEND_INFO = {
+    'google-oauth2': {
+        'title': _('Google'),
+        'icon': 'img/icon-google-plus.png',
+    },
     'facebook': {
         'title': _('Facebook'),
         'icon': 'img/icon-facebook.png',
     }
 }
-"""'google-oauth2': {
-    'title': _('Google'),
-    'icon': 'img/icon-google-plus.png',
-},
+"""
 'twitter': {
     'title': _('Twitter'),
     'icon': 'img/icon-twitter.png',
@@ -227,3 +234,8 @@ SASS_PROCESSOR_INCLUDE_DIRS = (BOWER_COMPONENTS_ROOT.child(
 
 # suprime texto de ajuda default do django-filter
 FILTERS_HELP_TEXT_FILTER = False
+
+
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS

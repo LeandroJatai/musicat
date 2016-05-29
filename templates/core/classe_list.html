@@ -23,7 +23,7 @@
       <tbody>
         {% for classe in object_list %}
           <tr>
-            <td><a href="{% url 'core:classe_list'%}">{{ classe.titulo }}</a></td>
+            <td><a href="{% url 'core:classe_change' classe.pk %}">{{ classe.titulo }}</a></td>
           </tr>
         {% endfor %}
       </tbody>

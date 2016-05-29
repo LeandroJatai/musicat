@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load common_tags %}
+
+{% block base_content %}
+  {% block actions %}
+    <div class="actions btn-group pull-right" role="group">
+      <a href="{{ view.create_url }}" class="btn btn-default">
+        {% trans 'Adicionar'%} {%model_verbose_name 'core.models.Musica'%}
+      </a>
+    </div>
+  {% endblock actions %}
+
+  {% if not object_list %}
+    <p>{{ NO_ENTRIES_MSG }}</p>
+  {% else %}
+  <div class="row">
+    <div class="col-sm-8">
+      <table class="table table-striped table-hover" width=100%>
+
+        <tbody>
+          {% for musica in object_list %}
+            <tr>
+              <td><a href="{% url 'core:musica_detail' musica.uri%}">{{ musica.titulo }}</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-4 atFacebookPortLet">
+      <div>
+        <script>(function(d){
+        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1";
+        d.getElementsByTagName('head')[0].appendChild(js);
+        }(document));</script>
+
+        <div class="fb-comments" data-href="http://www.musicat.com.br" data-num-posts="16" data-width="370" order_by="reverse_time"></div>
+      </div>
+    </div>
+  </div>
+  {%endif%}
+  {% include 'paginacao.html'%}
+{% endblock %}
