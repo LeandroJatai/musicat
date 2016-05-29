@@ -1,20 +1,25 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n core_filters %}
 
 {% block base_content %}
 
   <div class="clearfix">
     {% block actions %}
     <div class="actions btn-group pull-right" role="group">
-      <a href="{{ view.update_url }}" class="btn btn-default">{% trans 'Corrigir' %}</a>
+      <a href="{{ view.update_url }}" class="btn btn-primary btn-sm">{% trans 'Corrigir' %}</a>
     </div>
     {% endblock actions %}
   </div>
 
   {% block detail_content %}
-    {{object.versoes_set.first.historico_versao_set.first.descr}}
-    <br><br>
-    {{object.versoes_set.first.historico_versao_set.first.texto}}
+    <div class="container-cifra">
+      {% for linha in cifra %}
+        <div class="{{linha.0}} {{linha.1}}">
+          {{ linha.2|spaces|safe }}
+        </div>
+      {% endfor %}
+    </div>
+
   {% endblock detail_content %}
 
 {% endblock base_content %}

@@ -12,6 +12,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
 from core import forms
+from core.cifra import Cifrador
 from core.models import Classe, Musica, MusicaHistory, VersaoHistory, Versao
 from musicat.utils import make_pagination
 
@@ -161,8 +162,7 @@ class MusicaListView(ListView):
     model = Musica
 
     paginate_by = 100
-    verbose_name = model._meta.verbose_name
-    verbose_name_plural = model._meta.verbose_name_plural
+    verbose_name_plural = ''
 
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
@@ -186,3 +186,16 @@ class MusicaDetailView(DetailView):
     @property
     def update_url(self):
         return reverse_lazy('core:musica_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(MusicaDetailView, self).get_context_data(**kwargs)
+
+        texto = self.object.versoes_set.first(
+        ).historico_versao_set.first().texto
+
+        cifrador = Cifrador(texto)
+
+        cifra = cifrador.run()
+
+        context.setdefault('cifra', cifra)
+        return context

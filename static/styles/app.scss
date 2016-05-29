@@ -3,17 +3,22 @@
 @import "bootstrap/variables.scss";
 @import "header";
 
+$musicat_topo_color_bg: #342c2c;
+$musicat_topo_color_border: #a87003;
+$musicat_topo_color_text: #d9d7d7;
+
+
 // ADJUST NAVBAR ########################################
 
 .navbar {
   border-radius: 0px;
-  background-color: #342c2c;
-  border-color:  #a87003;
+  background-color: $musicat_topo_color_bg;
+  border-color: $musicat_topo_color_border;
   border-bottom-width: 2px;
   margin: 0;
   min-height: 56px;
   a {
-    color: #d9d7d7;
+    color: $musicat_topo_color_text;
   }
   .avatar {
     border-radius: 50%;
@@ -26,7 +31,7 @@
   a.navbar-brand {
     font-size: 30px;
     line-height: 1em;
-    color: #eee;
+    color: lighten($musicat_topo_color_text, 5%);
     font-family: "Cabin Condensed";
     padding: 13px 13px 12px;;
   }
@@ -42,7 +47,7 @@
           padding: 4px 7px 3px;
           margin: 8px 12px 0;
           line-height: 32px;
-          background: #654303;
+          background: transparentize($musicat_topo_color_border, 0.8);
 
         }
       }
@@ -50,8 +55,30 @@
     }
     & > .open {
       & > a, & > a:hover, & > a:focus {
-        background-color: #474036;
+        background-color: lighten($musicat_topo_color_bg, 5%);
         color: #fff;
+      }
+    }
+  }
+  .nav-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .nav {
+      flex: 0 0 auto;
+    }
+    .navbar-form {
+      flex: 1 0 auto;
+      padding: 0px;
+      .form-group {
+        width: 100%;
+        .form-control {
+          width: 100%;
+          border-radius: 0;
+          border: 0px;
+          background-color: lighten($musicat_topo_color_bg, 5%);
+          color: $musicat_topo_color_text;
+        }
       }
     }
   }
@@ -59,8 +86,9 @@
 // ADJUST topo ########################################
 
 .masthead {
+  margin-top: 60px;
   .slogan {
-    color: #a87003;
+    color: $musicat_topo_color_border;
     float: right;
   }
 }
@@ -68,15 +96,16 @@
 .page-header {
   padding: 0px;
   margin: 0px;
-  color: #342c2c;
+  color: $musicat_topo_color_bg;
 }
 
 a {
-  color:  #a87003;
+  color: $musicat_topo_color_border;
 }
 a:hover, a:focus {
-  color:  #6b4702;
+  color: darken($musicat_topo_color_border, 20%);
 }
+
 
 // ADJUST lateral direita ########################################
 
@@ -88,7 +117,37 @@ a:hover, a:focus {
 
 }
 
+
+// ADJUST interno ########################################
+
+.container-cifra {
+  font-family: monospace;
+  line-height: 1em;
+  font-size: 1em;
+  .lc {
+    color: red;
+    font-weight: bold;
+    padding-top: 0.5em;
+  }
+  .lt {
+    min-height: 1em;
+    &.refrao {
+      font-weight: bold;
+    }
+  }
+}
+
+
 // ADJUST DRUNKEN PARROT STYLES ########################################
+
+.btn-primary {
+  background-color: lighten($musicat_topo_color_border, 30%);
+  &:hover {
+      background-color: lighten($musicat_topo_color_border, 15%);
+      border-color: lighten($musicat_topo_color_border, 15%);
+  }
+}
+
 h1, .h1 {
   font-size: 30px;
 }
@@ -112,7 +171,7 @@ h6, .h6 {
 // #### footer ###########################################
 // based on http://getbootstrap.com/examples/sticky-footer
 
-$footer-height : 50px;
+$footer-height : 30px;
 html {
   position: relative;
   min-height: 100%;
@@ -134,4 +193,16 @@ body {
 // #### pagination ########################################
 .pagination {
   padding-top: 25px;
+}
+
+
+
+@media screen and (max-width: 767px) {
+
+
+  .navbar-inverse {
+    .nav-flex {
+      display: block;
+    }
+  }
 }

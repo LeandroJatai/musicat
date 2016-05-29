@@ -63,8 +63,8 @@ INSTALLED_APPS = (
 
 ) + MUSICAT_APPS
 
-if DEBUG:
-    INSTALLED_APPS += ('debug_toolbar',)
+#if DEBUG:
+#    INSTALLED_APPS += ('debug_toolbar',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -105,12 +105,12 @@ AUTH_USER_MODEL = 'base.User'
 
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOAuth2',
     'social.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 """
+    'social.backends.google.GoogleOAuth2',
 'social.backends.twitter.TwitterOAuth',"""
 
 SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY', cast=str)
@@ -132,16 +132,16 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 }
 
 SOCIAL_BACKEND_INFO = {
-    'google-oauth2': {
-        'title': _('Google'),
-        'icon': 'img/icon-google-plus.png',
-    },
+
     'facebook': {
         'title': _('Facebook'),
         'icon': 'img/icon-facebook.png',
     }
 }
-"""
+"""    'google-oauth2': {
+        'title': _('Google'),
+        'icon': 'img/icon-google-plus.png',
+    },
 'twitter': {
     'title': _('Twitter'),
     'icon': 'img/icon-twitter.png',
