@@ -4,11 +4,13 @@ from xml.dom.minidom import parseString
 
 from braces.views import FormMessagesMixin, PermissionRequiredMixin
 from django.core.urlresolvers import reverse_lazy
+from django.db.models import Q
 from django.http.response import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, FormView,\
+    FormMixin
 from django.views.generic.list import ListView
 
 from core import forms
@@ -164,6 +166,32 @@ class MusicaListView(ListView):
     paginate_by = 100
     verbose_name_plural = ''
 
+    def get(self, request, *args, **kwargs):
+        return super(ListView, self).get(request, *args, **kwargs)
+
+    def get_queryset(self):
+
+        search = ''
+        if 'search' in self.request.GET:
+            search = self.request.GET['search']
+
+        if not search:
+            return ListView.get_queryset(self)
+
+        q = Q()
+        texto = search.split(' ')
+
+        for item in texto:
+            if not item:
+                continue
+            q = q & (
+                Q(titulo__icontains=item) |
+                Q(versoes_set__historico_versao_set__texto__icontains=item) |
+                Q(versoes_set__historico_versao_set__descr__icontains=item)
+            )
+
+        return Musica.objects.filter(q).order_by('uri').distinct('uri')
+
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
         context.setdefault('title', self.verbose_name_plural)
@@ -190,12 +218,47 @@ class MusicaDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MusicaDetailView, self).get_context_data(**kwargs)
 
-        texto = self.object.versoes_set.first(
-        ).historico_versao_set.first().texto
+        if not self.kwargs['versao_id']:
+            versao = self.object.versoes_set.first(
+            ).historico_versao_set.first()
+        else:
+            try:
+                versao = self.object.versoes_set.get(
+                    pk=self.kwargs['versao_id']).historico_versao_set.first(
+                )
+            except:
+                versao = self.object.versoes_set.first(
+                ).historico_versao_set.first()
 
-        cifrador = Cifrador(texto)
+        direcao = 0
+        if 'direcao' in self.request.GET:
+            direcao = int(self.request.GET['direcao'])
 
-        cifra = cifrador.run()
+        if direcao and 'versao_session' in self.request.session:
+            versao_session = self.request.session['versao_session']
+
+            if versao_session.pk == versao.pk:
+                versao = versao_session
+
+        cifrador = Cifrador(versao.texto)
+
+        cifra = cifrador.run(direcao)
+
+        novo_texto = '\r\n'.join([c[2] for c in cifra])
+        versao.texto = novo_texto
+
+        if direcao:
+            self.request.session['versao_session'] = versao
 
         context.setdefault('cifra', cifra)
+        context.setdefault('tom', cifrador.tom)
+        context.setdefault('versao_ativa', versao.pk)
         return context
+
+    def get(self, request, *args, **kwargs):
+        if 'action' in request.GET:
+            self.template_name_suffix = '_detail_ajax'
+        else:
+            self.template_name_suffix = '_detail'
+
+        return super(DetailView, self).get(request, *args, **kwargs)

@@ -43,112 +43,11 @@ function refreshMask() {
     $('.hora_hms').mask("00:00:00", {placeholder:"hh:mm:ss"});
 }
 
-function autorModal() {
-
-  $(function() {
-    var dialog = $("#modal_autor").dialog({
-      autoOpen: false,
-      modal: true,
-      width: 500,
-      height: 300,
-      show: {
-        effect: "blind",
-        duration: 500},
-      hide: {
-        effect: "explode",
-        duration: 500
-      }
-    });
-
-    $("#button-id-limpar").click(function() {
-      $("#nome_autor").text('');
-
-      function clean_if_exists(fieldname) {
-        if ($(fieldname).length > 0) {
-          $(fieldname).val('');
-        }
-      }
-
-      clean_if_exists("#id_autor");
-      clean_if_exists("#id_autoria__autor");
-    });
-
-    $("#button-id-pesquisar").click(function() {
-      $("#q").val('');
-      $("#div-resultado").children().remove();
-      $("#modal_autor").dialog( "open" );
-      $("#selecionar").attr("hidden", "hidden");
-    });
-
-    $("#pesquisar").click(function() {
-        var query = $("#q").val()
-
-        $.get("/proposicao/pesquisar_autor?q="+ query, function(
-          data, status){
-
-          $("#div-resultado").children().remove();
-
-          if (data.length == 0) {
-            $("#selecionar").attr("hidden", "hidden");
-            $("#div-resultado").html(
-              "<span class='alert'><strong>Nenhum resultado</strong></span>");
-            return;
-          }
-
-          var select = $(
-            '<select id="resultados" \
-            style="min-width: 90%; max-width:90%;" size="5"/>');
-
-          for (i = 0; i < data.length; i++) {
-              id = data[i][0];
-              nome = data[i][1];
-
-              select.append($("<option>").attr('value',id).text(nome));
-          }
-
-          $("#div-resultado").append("<br/>").append(select);
-          $("#selecionar").removeAttr("hidden", "hidden");
-
-          $("#selecionar").click(function() {
-              res = $("#resultados option:selected");
-              id = res.val();
-              nome = res.text();
-
-              $("#nome_autor").text(nome);
-
-              // MateriaLegislativa pesquisa Autor via a tabela Autoria
-              if ($('#id_autoria__autor').length) {
-                $('#id_autoria__autor').val(id);
-              }
-              // Protocolo pesquisa a própria tabela de Autor
-              if ($('#id_autor').length) {
-                $("#id_autor").val(id);
-              }
-
-              dialog.dialog( "close" );
-          });
-        });
-      });
-    });
-
-    function get_nome_autor(fieldname) {
-      if ($(fieldname).length > 0) { // se campo existir
-        if ($(fieldname).val() != "") { // e não for vazio
-          var id = $(fieldname).val();
-          $.get("/proposicao/get_nome_autor?id=" + id, function(data, status){
-              $("#nome_autor").text(data.nome);
-          });
-        }
-      }
-    }
-
-    get_nome_autor("#id_autor");
-    get_nome_autor("#id_autoria__autor");
-}
 
 $(document).ready(function(){
     refreshDatePicker();
     refreshMask();
-    autorModal();
     initTinymce("texto-rico");
+    
+    $("input[name='search']").focus();
 });

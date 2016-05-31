@@ -23,6 +23,6 @@ urlpatterns = [
         MusicaImportView.as_view(), name='musica_import'),
 
 
-    url(r'^(?P<slug>[\w-]+)/$',
+    url(r'^(?P<slug>[\w-]+)/(?P<versao_id>[0-9]*)$',
         MusicaDetailView.as_view(), name='musica_detail'),
 ]

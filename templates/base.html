@@ -66,9 +66,9 @@
                 </li>
               </ul>
 
-              <form class="nav navbar-form" role="search">
+              <form class="nav navbar-form" role="search" action="{% url 'core:musica_list'%}" method="get">
                 <div class="form-group">
-                  <input type="search" class="form-control" placeholder="Pesquisar...">
+                  <input type="search" class="form-control" name="search" value="{{request.GET.search}}" placeholder="Pesquisar... (em títulos, letras, nomes de interpretes)">
                 </div>
               </form>
               <ul class="nav navbar-nav" id="autenticacao">
@@ -97,7 +97,7 @@
                       {% endfor %}
                  {% endif %}
               </ul>
-            </div>      
+            </div>
           </div><!--/.nav-collapse -->
         </div>
       </nav>

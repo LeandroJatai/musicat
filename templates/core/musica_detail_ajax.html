@@ -1,0 +1,7 @@
+{% load i18n core_filters %}
+
+  {% for linha in cifra %}
+    <div class="{{linha.0}} {{linha.1}}">
+      {{ linha.2|spaces|safe }}
+    </div>
+  {% endfor %}

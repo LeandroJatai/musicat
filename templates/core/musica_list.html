@@ -24,7 +24,7 @@
         <tbody>
           {% for musica in object_list %}
             <tr>
-              <td><a href="{% url 'core:musica_detail' musica.uri%}">{{ musica.titulo }}</a></td>
+              <td><a href="{% url 'core:musica_detail' musica.uri '' %}">{{ musica.titulo }}</a></td>
             </tr>
           {% endfor %}
         </tbody>
