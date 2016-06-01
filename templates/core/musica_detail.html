@@ -10,12 +10,16 @@
       <a href="#" onclick="alterarMeioTom(-1)" class="btn btn-default" title="Diminuir Meio Tom" >- ½ Tom</a>
       <a href="#" onclick="alterarMeioTom(1)" class="btn btn-default" title="Aumentar Meio Tom">+ ½ Tom</a>
     </div>
+
+    <div class="actions btn-group btn-group-xs" role="group">
+      <a class="btn btn-default" id="btn_font_menos" title="Diminuir tamanho da letra">a</a>
+      <a class="btn btn-default" id="btn_font_mais"  title="Aumentar tamanho da Letra">A</a>
+    </div>
     <div class="actions btn-group btn-group-xs pull-right" role="group">
       <a href="{{ view.update_url }}" class="btn btn-primary">{% trans 'Corrigir' %}</a>
     </div>
       <div class="clearfix">
-
-        <div class="actions btn-group btn-group-xs btn-group-versoes" role="group">
+        <div class="actions btn-group btn-group-xs btn-group-versoes pull-right" role="group">
           {% for versao in object.versoes_set.all %}
             <a href="{% url 'core:musica_detail' object.uri versao.pk%}" class="btn btn-default {%if versao.pk == versao_ativa%}active{%endif%}">{{versao.historico_versao_set.first.descr|default:'&nbsp;'}}</a>
           {% endfor %}

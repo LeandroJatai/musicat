@@ -3,8 +3,6 @@ import re
 
 from django.utils import timezone
 
-from core.mutils import Chord
-
 
 LINHA_CIFRA_PATTERN = re.compile(
     "^[^cefhklnpqrtvwyzHKLNOPQRTVWXYZ.,!?ãâáàäẽêéèëĩîíìïõôóòöũûúùüç_]+$")
@@ -150,12 +148,12 @@ class AnaliseTonal:
         m = 0
         for key, tom in self.tons.items():
             s = sum(tom.estatistica)
-            print(tom.tonica, s, tom.estatistica)
+            #print(tom.tonica, s, tom.estatistica)
             if s > m:
                 m = s
                 self.tom = tom.tonica
 
-        print(self.tom)
+        # print(self.tom)
 
     def mudarTom(self, linhas, direcao):
 
@@ -166,7 +164,7 @@ class AnaliseTonal:
         for l in linhas:
             if l[0] == LINHA_CIFRA:
                 partes = l[2].split(' ')
-                partes = [[p, len(p), len(p)] for p in partes]
+                partes = [[p, len(p), len(p), 0] for p in partes]
 
                 for p in partes:
                     if not p[1]:
@@ -214,7 +212,7 @@ class AnaliseTonal:
                     p = partes[i]
                     if p[1] == p[2]:
                         if divida:
-                            if not p[0] and i + 1 < len(partes):
+                            if not p[0]:
                                 if divida > 0:
                                     p[2] = -1
                                     divida -= 1
@@ -226,18 +224,21 @@ class AnaliseTonal:
 
                     divida += (p[2] - p[1])
 
+                    if divida < 0:
+                        p[3] = divida * (-1)
+                        divida = 0
+
                 result = ''
-                flag_espaco = ''
                 for p in partes:
                     if p[0]:
                         result += p[0] + ' '
                     else:
                         if p[2] == 0:
                             result += ' '
-                            flag_espaco = ''
                         elif p[2] > 0:
                             result += ' ' * (1 + p[2])
-                            flag_espaco = ''
+                    if p[3]:
+                        result += ' ' * p[3]
                 l[2] = result.rstrip()
 
 

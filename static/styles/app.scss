@@ -7,6 +7,8 @@ $musicat_topo_color_bg: #342c2c;
 $musicat_topo_color_border: #a87003;
 $musicat_topo_color_text: #d9d7d7;
 
+$musicat_topo_color_btn_modo_apresentacao: #a87003;
+
 
 @mixin placeholder($color, $opacity, $fontsize, $fontweight) {
     &::-webkit-input-placeholder {
@@ -64,6 +66,7 @@ $musicat_topo_color_text: #d9d7d7;
   }
   .navbar-nav {
     & > li {
+      margin-right: 0.6em;
       & > a {
         line-height: 54px;
         padding-top: 0px;
@@ -72,7 +75,7 @@ $musicat_topo_color_text: #d9d7d7;
         &.btn-social {
           border-radius: 10px;
           padding: 4px 7px 3px;
-          margin: 8px 12px 0;
+          margin: 8px 0 0 0.6em ;
           line-height: 32px;
           background: transparentize($musicat_topo_color_border, 0.8);
 
@@ -85,6 +88,15 @@ $musicat_topo_color_text: #d9d7d7;
         background-color: lighten($musicat_topo_color_bg, 5%);
         color: #fff;
       }
+
+      & > .menu-classes {
+          right: 0;
+          left: 0;
+          position: fixed;
+          top: 57px;
+          bottom: auto;
+      }
+
     }
   }
   .nav-flex {
@@ -100,7 +112,6 @@ $musicat_topo_color_text: #d9d7d7;
       .form-group {
         width: 100%;
         .form-control {
-
           padding-left: 43px;
           background: url(/static/img/search_box_icon36.png) no-repeat 5px center;
           width: 100%;
@@ -207,6 +218,8 @@ h6, .h6 {
 }
 
 
+
+
 // #### footer ###########################################
 // based on http://getbootstrap.com/examples/sticky-footer
 
@@ -229,12 +242,49 @@ body {
   text-align: center;
 }
 
+.btn-modo-apresentacao {
+  position: fixed;
+  bottom: 0.5em;
+  right: 0.5em;
+  background-color: $musicat_topo_color_btn_modo_apresentacao;
+  cursor: pointer;
+  width: 1.5em;
+  height: 2em;
+  &.paisagem {
+    width: 2em;
+    height: 1.2em;
+  }
+}
+
 // #### pagination ########################################
 .pagination {
   padding-top: 25px;
 }
 
+.container-fluid, .container {
+  transition: all 1s ease;
+}
 
+.velocidade {
+    position: fixed;
+    background-color: rgba(200, 200, 200, 0);
+    top: 0px;
+    bottom: 0px;
+    width: 5px;
+    border-right: 1px solid #666;
+    z-index: 998;
+  }
+  .meioControleVelocidade {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.08);
+    top: -52px;
+    width: 100%;
+    height: 0px;
+    padding: 25px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ccc;
+    z-index: 998;
+  }
 
 @media screen and (max-width: 767px) {
 
@@ -242,6 +292,22 @@ body {
   .navbar-inverse {
     .nav-flex {
       display: block;
+    }
+    .navbar-nav {
+      & > .open {
+
+        & > .menu-classes {
+            right: 0;
+            left: 0;
+            position: static;
+            top: inherit;
+            bottom: inherit;
+            li {
+              float:none;
+            }
+        }
+
+      }
     }
   }
 }
@@ -259,5 +325,5 @@ body {
   .btn-group-versoes, .masthead {
     display: none;
   }
-  
+
 }
